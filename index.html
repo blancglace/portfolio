@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Développeur Kotlin / Java | Portfolio & CV</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-purple: #7c3aed;
+            --accent-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* En-tête (Header) / 顶部个人信息卡片 */
+        header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .profile-info h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .profile-info p {
+            color: var(--text-sub);
+            font-size: 1.1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            background: var(--accent-purple);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        /* Dispositions en grille / 双列布局 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            color: #38bdf8;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Compétences (Skills) / 技能标签 */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(124, 58, 237, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Projets / 项目列表 */
+        .project-item {
+            border-left: 3px solid var(--accent-purple);
+            padding-left: 16px;
+            margin-bottom: 16px;
+        }
+
+        .project-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .project-item p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        /* Zone d'interaction / 代码交互演示框 */
+        .interactive-box {
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .code-display {
+            font-family: 'Courier New', Courier, monospace;
+            color: #a7f3d0;
+            background: #000;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Notification Toast / 底部提示气泡 */
+        #toast {
+            visibility: hidden;
+            min-width: 220px;
+            background-color: #10b981;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部 Header (法文) -->
+<header>
+    <div class="profile-info">
+        <!-- 替换为你的法文/英文名字或拼音 -->
+        <h1 id="userName">BAI/ Ruobing</h1>
+        <p>🚀 Développeur Logiciel | Spécialisation Kotlin & Java</p>
+        <p style="font-size: 0.9rem; color: #64748b; margin-top: 4px;">Passionné par la qualité du code et le développement applicatif.</p>
+    </div>
+    <div class="cta-buttons">
+        <!-- 请在此修改你的真实邮箱与电话 -->
+        <button class="btn" onclick="copyContact('votre.email@example.com', 'E-mail copié !')">📧 E-mail</button>
+        <button class="btn btn-secondary" onclick="copyContact('+33662655800', 'Téléphone copié !')">📱 Téléphone</button>
+    </div>
+</header>
+
+<!-- 主体区域 / Main Grid -->
+<div class="grid-container">
+
+    <!-- 左侧：Compétences & À propos -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <div class="card">
+            <h2>🛠️ Compétences Techniques</h2>
+            <div class="skills-list">
+                <span class="skill-tag">Kotlin</span>
+                <span class="skill-tag">Réseaux & Sécurité:<br>Packet Tracer, Cisco IOS,DHCP, DNS, OSPF, ACL,NAT/PAT,Ping/Traceroute</span>
+                <span class="skill-tag">Bases de Données:<br>MySQL, SQL (requêtes, CRUD,modélisation de base</span>
+                <span class="skill-tag">Systèmes & Environnement:<br>Windows 10/11, Linux (Ubuntunotions/commandes de base),installation & dépannage N1Python (scripting simple)</span>
+                <span class="skill-tag">Développement Web:<br>HTML5, CSS3, JavaScript(notions) </span>
+                <span class="skill-tag">Compétences Datacenter/Support: <br> Diagnostic de panne /Troubleshooting, Respect des procédures (SOP)</span>
+                <span class="skill-tag">Null Safety</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💡 À propos de moi</h2>
+            <p style="color: var(--text-sub); font-size: 0.95rem;">
+                Développeur passionné par l'écosystème JVM. Actuellement axé sur l'apprentissage approfondi de Kotlin, la lisibilité et la robustesse du code. Adepte de l'approche « apprentissage par le projet ».
+                <br>Carte de Résident 10 ans , Autorisation de travail , Disponibilité immédiate
+            </p>
+
+        </div>
+        <div class="card">
+            <h2>Atous</h2>
+            <p>Travailler en équipe<br>
+                Rigueur et autonomie<br>
+                Avoir le sens du service<br>
+                Gérer son stres
+            </p>
+        </div>
+        <div class="card">
+            <h2>Langues</h2>
+            <p>Français:B1<br>
+                Anglais:B1
+            </p>
+        </div>
+
+    </div>
+
+    <!-- 右侧：Projets & Démo Interactive -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <div class="card">
+            <h2>⚡ Démo Interactive (Kotlin Logic)</h2>
+            <p style="font-size: 0.9rem; color: var(--text-sub);">Testez l'évaluation dynamique de la logique Kotlin :</p>
+
+            <div class="interactive-box">
+                <p>Valeur actuelle (Count) : <strong id="counterVal" style="color: #38bdf8; font-size: 1.2rem;">5</strong></p>
+
+                <div class="code-display">
+                    val statut = when(count) {<br>
+                    &nbsp;&nbsp;in 1..5 -> "<span id="statusText">Niveau Débutant</span>"<br>
+                    &nbsp;&nbsp;else -> "Niveau Intermédiaire"<br>
+                    }
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="changeCount(-1)">- Diminuer</button>
+                    <button class="btn" style="padding: 6px 12px;" onclick="changeCount(1)">+ Augmenter</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📦 Projets Réalisés</h2>
+            <div class="project-item">
+                <h3>1. un site de petition</h3>
+                <p>Développement d'un tableau de bord dynamique présentant les compétences Kotlin/Java et l'interactivité JS.</p>
+            </div>
+            <div class="project-item">
+                <h3>2. App mobile pr résevation billet d'avion</h3>
+                <p>Conception d'applications console (Jeu de devinette, modélisation POO, gestion de structures de données).</p>
+            </div>
+            <h2>📦 Pratique et Simulations Réseaux (Cisco Packet Tracer)</h2>
+            <div class="project-item">
+                <h3>Mars 2026 projet personnel En distanciel</h3>
+                <p>Réalisation en autonomie de plusieurs laboratoires réseaux
+                    Routage statique et routage dynamique (OSPF / RIP)
+                    Segmentation réseau :VLAN, Inter-VLAN (Router-on-a-Stick)
+                    Sécurité & Gestion des accès : ACL, NAT/PAT (statique et surcharge)
+                    Configuration des services réseaux de base (DHCP, DNS, Telnet).
+                    Analyse des tables de routage, tests de connectivité (Ping/Traceroute) et
+                    troubleshooting</p>
+            </div>
+            <h2>📦 Stage - Technicienne de maintenance informatique</h2>
+            <div class="project-item">
+                <h3>Jan. 2025 SARL Point de Wu Paris</h3>
+                <p>Maintenance Matérielle : Diagnostic, démontage et remontage de PC
+                    portables ; remplacement de composants (HDD, RAM).<br>
+                    Systèmes & Logiciels : Installation et déploiement de Windows sur postes
+                    clients ; dépannage de premier niveau (imprimantes, logiciels).<br>
+                    Infrastructure Réseau (Projet BYD) : Tests de connectivité des prises RJ45
+                    via testeur de continuité sur site client.<br>
+                    1. Assistance au déploiement de routeurs et observation de la configuration
+                    de pare-feu Fortigate.<br>
+                    2. Paramétrage de solutions multimédias (vidéoprojecteurs) et tests de
+                    téléphonie IP.<br>
+                    Gestion logistique & stock : Réception des livraisons d'équipements
+                    informatiques, contrôle des réceptions et gestion des stocks de pièces
+                    détachées (composants).<br>
+                    Suivi logistique : Enregistrement du matériel entrant/sortant et mise à jour
+                    de l'inventaire.
+                    </p>
+            </div>
+            <h2>📦 Équipière en restauration rapide (Temps partiel, le week-end</h2>
+            <div class="project-item">
+                <p>Depuis déc. 2024 Quick Bry-sur-Marne.</p>
+            </div>
+            <h2>📦 Diplômes et Formations</h2>
+            <div class="project-item">
+                <h3>Master 2 Informatique</h3>
+                <p>De 2009 à 2011 Université Sorbonne Paris Nord (ex‑Paris 13) Villetaneuse</p>
+            </div>
+            <div class="project-item">
+                <h3>Licence 3 Informatique</h3>
+                <p>De 2008 à 2009 Université Sorbonne Paris Nord (ex‑Paris 13) Villetaneuse</p>
+            </div>
+            <div class="project-item">
+                <h3>Parcours d'Orientation & Reconversion Numérique</h3>
+                <p> (7 mois au total) De 2024 à 2026 Ressources formation Val de Fontenay </p>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 提示气泡 -->
+<div id="toast">Copié avec succès !</div>
+
+<script>
+    // 动态交互逻辑 (JS)
+    let count = 5;
+
+    function changeCount(delta) {
+        count += delta;
+        if (count < 1) count = 1;
+
+        document.getElementById('counterVal').innerText = count;
+
+        const statusText = document.getElementById('statusText');
+        if (count <= 5) {
+            statusText.innerText = "Niveau Débutant";
+        } else if (count <= 10) {
+            statusText.innerText = "Niveau Intermédiaire";
+        } else {
+            statusText.innerText = "Niveau Avancé";
+        }
+    }
+
+    // 复制联系方式函数
+    function copyContact(text, message) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(message);
+        }).catch(() => {
+            showToast("Échec de la copie");
+        });
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(() => {
+            toast.className = toast.className.replace("show", "");
+        }, 3000);
+    }
+</script>
+</body>
+</html>
